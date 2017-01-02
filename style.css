@@ -1,0 +1,52 @@
+.playerScreens {
+  display: flex;
+  justify-content: space-around;
+}
+
+.playerOneBox, .playerTwoBox {
+  border: 1px solid white;
+  width: 415px;
+  height: 415px;
+  margin: 5px;
+}
+
+.divider {
+  border: 1px solid black;
+  width:1px;
+  height: 430px;
+}
+
+.card {
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 77px;
+  height: 77px;
+  margin: 2px;
+
+}
+.back {
+  display: flex;
+  justify-content: center;
+  align-items: center; /*moved this three lines from .card to here at .back */
+}
+.red {
+  background-color: red;
+}
+.blue {
+  background-color: blue;
+}
+
+.row1, .row2, .row3, .row4, .row5, .row6, .row7, .row8, .row9, .row10 {
+  display: flex;
+}
+
+.btmBar {
+  padding: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+.btmBoxes {
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 20px;
+}
