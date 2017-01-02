@@ -152,6 +152,8 @@ var checkMatch = function(player) {
         $('.matched').removeClass('flipped1 flipped2');
         pairsOfMatchedCardsPlayerOne++;
         updateOrCheckScore('playerOne');
+        numberOfFlippedCardsForPlayerOne = 0;
+        return;
       }
       else {
         setTimeout(function() {
@@ -178,6 +180,8 @@ var checkMatch = function(player) {
         $('.matched2').removeClass('flipped3 flipped4');
         pairsOfMatchedCardsPlayerTwo++;
         updateOrCheckScore('playerTwo');
+        numberOfFlippedCardsForPlayerTwo = 0;
+        return;
       }
       else {
         setTimeout(function() {
