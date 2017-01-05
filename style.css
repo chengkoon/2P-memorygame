@@ -8,6 +8,7 @@
   width: 415px;
   height: 415px;
   margin: 5px;
+  transition: all 1s ease;
 }
 
 .divider {
@@ -18,23 +19,38 @@
 
 .card {
   border: 1px solid black;
+  /*background: none;*/
   border-radius: 8px;
   width: 77px;
   height: 77px;
   margin: 2px;
 
+   /*moved this three lines from .card to here at .back */
+  /*text-align: center;
+  vertical-align: middle;*/
 }
-.back {
+
+.back, .front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*.back, .front {
   display: flex;
   justify-content: center;
   align-items: center; /*moved this three lines from .card to here at .back */
-}
+/*}*/
+
 .red {
   background-color: red;
+  transition: 0.1s ease;
 }
 .blue {
   background-color: blue;
+  transition: 0.1s ease;
 }
+
 
 .row1, .row2, .row3, .row4, .row5, .row6, .row7, .row8, .row9, .row10 {
   display: flex;
@@ -49,4 +65,24 @@
   border: 1px solid black;
   border-radius: 8px;
   padding: 20px;
+}
+
+
+.white1 {
+  background-color: white;
+  transition: 0.1s ease;
+}
+.white2 {
+  background-color: white;
+  transition: 0.1s ease;
+}
+
+.rotate90Clockwise {
+  transform:rotate(90deg);
+  transition-duration:1s;
+}
+
+.rotate90CounterClockwise {
+  transform:rotate(-90deg);
+  transition-duration:1s;
 }
