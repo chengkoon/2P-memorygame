@@ -12,8 +12,6 @@
 
   <script src="specialEffects.js"></script>
   <script src="main.js"></script>
-
-  <!-- <script src="https://use.fontawesome.com/2da6e4112c.js"></script> -->
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 
   <link rel="stylesheet" href="style.css">
@@ -23,15 +21,33 @@
 </head>
 <body>
 
+<div class="firstBox hidden">
+  <div class="title">Just some simple rules...</div>
+  <div class="p1instructions"><span>Player 1</span> - your keys are <span>'WASD' for movement</span> and <span>'V' for flipping</span>.</div>
+  <div class="p2instructions"><span>Player 2</span> - your keys are the <span>direction keys for movement</span> and <span>'M' for flipping</span>.</div>
+  <div class="bothPlayersInstructions"><span>Both players</span> - power-ups like <i class="fa fa-recycle fa-lg" aria-hidden="true"></i>
+    <i class="fa fa-pause-circle-o fa-lg" aria-hidden="true"></i>
+    <i class="fa fa-arrows-alt fa-lg" aria-hidden="true"></i>
+    <i class="fa fa-eye-slash fa-lg" aria-hidden="true"></i>
+    <i class="fa fa-eye fa-lg" aria-hidden="true"></i> are available. Just match them to get it.<br>
+    But avoid the bomb <i class="fa fa-bomb fa-lg" aria-hidden="true"></i> (You won't know where it is anyway :D)
+  <button type="button" name="button" class="toStart">Click to start!</button>
+  </div>
+</div>
+
+<div class="notHidden">
+
+
+<div class="topBar">
+  <div class="playerOneStatusBar">Player One Status: <span class="playerOneStatus">Default</span></div>
+  <div class="playerTwoStatusBar">Player Two Status: <span class="playerTwoStatus">Default</span></div>
+</div>
 <div class="playerScreens">
   <div class="playerOneBox">
     <div class="row1">
 
       <div class="card" id="1">
-          <!-- <i class="fa fa-4x fa-user-circle" style="backface-visibility: hidden;"></i> -->
         <div class="front">
-          <!-- <i class="fa fa-4x fa-user-circle" style="backface-visibility: hidden;"></i> -->
-          <!-- xrayCursor will input the above value here -->
         </div>
         <div class="back">
           <i class="fa fa-4x" aria-hidden="true"></i>
@@ -361,6 +377,8 @@
   <div class="btmBoxes playerOneScore">PLAYER ONE SCORE</div>
   <div class="btmBoxes timerBox">60 SEC</div>
   <div class="btmBoxes playerTwoScore">PLAYER TWO SCORE</div>
+</div>
+
 </div>
 
 </body>

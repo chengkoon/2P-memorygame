@@ -1,6 +1,71 @@
+@font-face {
+  font-family: 'pixel';
+  src: url('font.ttf');
+}
+
+div.hidden {
+  display:none;
+  z-index: -1;
+}
+
+.firstBox {
+  border: 1px solid black;
+  opacity:0.9;
+  padding: 30px;
+  left: 28%;
+  top: 30%;
+  z-index: 100;
+  /*display: flex;*/
+  position: absolute;
+  /*align-self: center;*/
+  /*flex-wrap:wrap;
+  flex-direction: column;*/
+}
+.firstBox > div {
+  margin: 10px;
+
+}
+.firstBox > .title {
+  text-align: center;
+}
+.p1instructions > span {
+  color: red;
+}
+.p2instructions > span {
+  color: blue;
+}
+.bothPlayersInstructions > span {
+  font-weight: bold;
+}
+button {
+  padding: 7px;
+  display: block;
+  margin: 10px auto;
+}
+.topBar {
+  border: 1px solid white;
+  width: 1180px;
+  height: 70px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.playerOneStatusBar, .playerTwoStatusBar {
+  border: 1px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: left;
+  padding: 14px;
+  width: 340px;
+  height: 30px;
+}
+
+
 .playerScreens {
   display: flex;
   justify-content: space-around;
+
 }
 
 .playerOneBox, .playerTwoBox {
@@ -24,7 +89,6 @@
   width: 77px;
   height: 77px;
   margin: 2px;
-
    /*moved this three lines from .card to here at .back */
   /*text-align: center;
   vertical-align: middle;*/
@@ -85,4 +149,14 @@
 .rotate90CounterClockwise {
   transform:rotate(-90deg);
   transition-duration:1s;
+}
+
+.winner {
+  border: 1px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: left;
+  padding: 14px;
+  width: 340px;
+  height: 30px;
 }

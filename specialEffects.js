@@ -108,17 +108,30 @@ var pausePausePause = function(victim) {
   if (victim === 'playerTwo') {
     statusOfPlayerTwoCursor = 'slowed';
     setTimeout(function() {
-      statusOfPlayerTwoCursor = 'normal';
+      preventKeySpamming2 = setInterval(function() {
+        statusOfPlayerTwoCursor = 'normal';
+      },100)
       $('.blue').css('transition','0.1s ease');
     },10000)
+    setTimeout(function() {
+      clearInterval(preventKeySpamming2);
+    },13000)
   }
   if (victim === 'playerOne') {
     statusOfPlayerOneCursor = 'slowed';
+
+
     setTimeout(function() {
       //set a setInterval here to 'rapidfire' setting (100ms) status back to 'normal', in case player spams direction key.
-      statusOfPlayerOneCursor = 'normal';
+      preventKeySpamming1 = setInterval(function() {
+        statusOfPlayerOneCursor = 'normal';
+      },100)
+
       $('.red').css('transition','0.1s ease');
     },10000)
+    setTimeout(function() {
+      clearInterval(preventKeySpamming1);
+    },13000)
   }
 }
 
@@ -177,6 +190,61 @@ var pausePausePause = function(victim) {
 // })
 
 // $(document).ready(function() {
+
+var checkForBomb = function(flippedNum) {
+
+  if (flippedNum === 'flipped1') {
+    if ($('.flipped1 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped1').flip(false);
+        $('.card').removeClass('flipped1');
+        numberOfFlippedCardsForPlayerOne = 0;
+        scoreOfPlayerOne -= 10;
+        $('.playerOneScore').text(scoreOfPlayerOne);
+      },800)
+      return true;
+    }
+  }
+  else if (flippedNum === 'flipped2') {
+    if ($('.flipped2 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped1, .flipped2').flip(false);
+        $('.card').removeClass('flipped1 flipped2');
+        numberOfFlippedCardsForPlayerOne = 0;
+        scoreOfPlayerOne -= 10;
+        $('.playerOneScore').text(scoreOfPlayerOne);
+      },800)
+      return true;
+    }
+  }
+  if (flippedNum === 'flipped3') {
+    if ($('.flipped3 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped3').flip(false);
+        $('.card').removeClass('flipped3');
+        numberOfFlippedCardsForPlayerTwo = 0;
+        scoreOfPlayerTwo -= 10;
+        $('.playerTwoScore').text(scoreOfPlayerTwo);
+      },800)
+      return true;
+    }
+  }
+  else if (flippedNum === 'flipped4') {
+    if ($('.flipped4 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped3, .flipped4').flip(false);
+        $('.card').removeClass('flipped3 flipped4');
+        numberOfFlippedCardsForPlayerTwo = 0;
+        scoreOfPlayerTwo -= 10;
+        $('.playerTwoScore').text(scoreOfPlayerTwo);
+      },800)
+      return true;
+    }
+  }
+
+
+
+}
 
 var arrOfUnmatchedCardsIdPlayerOne = [];
 var arrOfUnmatchedCardsIdPlayerTwo = [];
