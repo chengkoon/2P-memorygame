@@ -492,67 +492,16 @@ $(document).ready(function(){
       }
       else if (event.which === 88) { //test for shuffleCard
 
-        // prepareForCardShuffle(); //make sure to stop victim's cursor from moving when implementing cardShuffle!
+
         prepareForCardShuffle();
-        // cardShuffle(arrOfUnmatchedCardsId);
 
-        // cardShuffle();
-
-        // var firstCardId = 4;
-        // var secondCardId = 6;
-        //
-        // var firstCard = $('#'+firstCardId),
-        //     secondCard = $('#'+secondCardId),
-        //     beforeSecondCard = $('#'+(secondCardId-1)),
-        //     afterSecondCard = $('#'+(secondCardId+1)),
-        //     distanceTop = firstCard.offset().top - secondCard.offset().top,
-        //     distanceLeft = firstCard.offset().left - secondCard.offset().left,
-        //     animating = false;
-        //
-        //
-        // if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) {
-        //   animating = true;
-        //   $.when(firstCard.animate({
-        //     top: -distanceTop,
-        //     left: -distanceLeft
-        //   }, 2000),
-        //   secondCard.animate({
-        //     top:distanceTop,
-        //     left:distanceLeft
-        //   }, 2000)).done(function() {
-        //     secondCard.css('top', '0px');
-        //     secondCard.css('left', '0px');
-        //     firstCard.css('top', '0px');
-        //     firstCard.css('left', '0px');
-        //     secondCard.insertBefore(firstCard);
-        //     if (secondCardId%5===1) {
-        //       firstCard.insertBefore(afterSecondCard);
-        //     }
-        //     else {
-        //       firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-        //     };
-        //     secondCard.attr('id',firstCardId);
-        //     firstCard.attr('id',secondCardId);
-        //     firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-        //     secondCard = $('#'+secondCardId);
-        //
-        //     // firstCard.prependTo(".row1");
-        //     // console.log(secondCard.attr('id'));
-        //     // secondCard.attr('id=2')
-        //     animating = false;
-        //   });
-        // }
       }
 
 
 
       else if (event.which === 87 || 65 || 83 || 68 || 38 || 37 || 40 || 39)  {
-        // if (boardRotationPlayerOne === 'normal') {
+
         canMoveOrNot(event);
-        // }
-        // else if (boardRotationPlayerOne === 'rotated') {
-        //
-        // }
       }
 
     }

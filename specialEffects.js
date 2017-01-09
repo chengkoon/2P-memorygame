@@ -135,61 +135,6 @@ var pausePausePause = function(victim) {
   }
 }
 
-// $(document).ready(function() {
-//
-//
-//
-//   var prepareForCardShuffle = function() {
-//
-//
-//     var firstCardId = 1,
-//         secondCardId = 3;
-//     var firstCard = $('#'+firstCardId),
-//         secondCard = $('#'+secondCardId),
-//         beforeSecondCard = $('#'+(secondCardId-1)),
-//         afterSecondCard = $('#'+(secondCardId+1)),
-//         distanceTop = firstCard.offset().top - secondCard.offset().top,
-//         distanceLeft = firstCard.offset().left - secondCard.offset().left,
-//         animating = false;
-//
-//
-//     if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) {
-//       animating = true;
-//       $.when(firstCard.animate({
-//         top: -distanceTop,
-//         left: -distanceLeft
-//       }, 2000),
-//       secondCard.animate({
-//         top:distanceTop,
-//         left:distanceLeft
-//       }, 2000)).done(function() {
-//         secondCard.css('top', '0px');
-//         secondCard.css('left', '0px');
-//         firstCard.css('top', '0px');
-//         firstCard.css('left', '0px');
-//         secondCard.insertBefore(firstCard);
-//         if (secondCardId%5===1) {
-//           firstCard.insertBefore(afterSecondCard);
-//         };
-//         else if {
-//           firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-//         };
-//         secondCard.attr('id',firstCardId);
-//         firstCard.attr('id',secondCardId);
-//         firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-//         secondCard = $('#'+secondCardId);
-//
-//         // firstCard.prependTo(".row1");
-//         // console.log(secondCard.attr('id'));
-//         // secondCard.attr('id=2')
-//         animating = false;
-//       });
-//     }
-//   }
-//
-// })
-
-// $(document).ready(function() {
 
 var checkForBomb = function(flippedNum) {
 
@@ -251,8 +196,6 @@ var arrOfUnmatchedCardsIdPlayerTwo = [];
 
 var prepareForCardShuffle = function(victim) {
 
-  // var arrOfUnmatchedCardsId = [];
-
   if (victim === 'playerOne') {
 
     for (var i=1; i<26; i++) { //get array of IDs of unmatched cards
@@ -278,7 +221,7 @@ var prepareForCardShuffle = function(victim) {
 
 }
 
-// var arrOfCardsToBeShuffled = [];
+
 
 var cardShuffle = function(arrOfUnmatchedCardsId) {
 
@@ -294,16 +237,6 @@ var cardShuffle = function(arrOfUnmatchedCardsId) {
       distanceLeft,
       animating = false;
 
-  //
-  // if (arrOfUnmatchedCardsId.length >= 4) {
-  //   arrOfCardsToBeShuffled = arrOfUnmatchedCardsId.slice(0,4);
-  // }
-  // else if (arrOfUnmatchedCardsId.length < 4) {
-  //   arrOfCardsToBeShuffled = arrOfUnmatchedCardsId;
-  // }
-
-  // while (arrOfCardsToBeShuffled.length) {
-
   if (arrOfUnmatchedCardsId.length >= 2) {
      arrOfCardsToBeShuffled = arrOfUnmatchedCardsId.slice(0,2);
   }
@@ -311,11 +244,7 @@ var cardShuffle = function(arrOfUnmatchedCardsId) {
 
 // start of odd-number arr scenario ------------------------------------------
 
-    // if (arrOfCardsToBeShuffled.length === 3) { //if it's 5 cards, it will go thru the 'else if' condition first, splicing away 2 cards, leaving behind 3 cards for this to occur next.
-      //this is to take care of the situation where the arr is odd number
-      //the arr is most probably odd number (it excludes the cursor's card)
-      //but it could be even number (if the bomb has been flipped)
-      //so now the plan is to shuffle first two cards (same as non-odd scenario) but this time we splice away only one card, instead of two, in order to have two cards left (even)
+
       firstCardId = arrOfCardsToBeShuffled[0];
       secondCardId = arrOfCardsToBeShuffled[1];
 
@@ -359,77 +288,5 @@ var cardShuffle = function(arrOfUnmatchedCardsId) {
           // secondCard.attr('id=2')
           animating = false;
         });
-      // }
-      // arrOfCardsToBeShuffled.splice(0,1); //now left 2 cards, even number. will skip ===3 scenario in next loop
-    // } //end of odd-number scenario ---------------------------------------------
 
-//start of even-number and length=5 scenario------------------------------------
-
-    // else if ((arrOfCardsToBeShuffled.length > 3) || (arrOfCardsToBeShuffled.length < 3)){
-    //
-    //
-    //
-    //   firstCardId = arrOfCardsToBeShuffled[0];
-    //   secondCardId = arrOfCardsToBeShuffled[1];
-    //
-    //
-    //   firstCard = $('#'+firstCardId),
-    //   secondCard = $('#'+secondCardId),
-    //   beforeSecondCard = $('#'+(secondCardId-1)),
-    //   afterSecondCard = $('#'+(secondCardId+1)),
-    //   distanceTop = firstCard.offset().top - secondCard.offset().top,
-    //   distanceLeft = firstCard.offset().left - secondCard.offset().left,
-    //   animating = false;
-    //
-    //
-    //   if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) { //again, this condition is not necessary now..
-    //     animating = true;
-    //     $.when(firstCard.animate({
-    //       top: -distanceTop,
-    //       left: -distanceLeft
-    //     }, 2000),
-    //     secondCard.animate({
-    //       top:distanceTop,
-    //       left:distanceLeft
-    //     }, 2000)).done(function() {
-    //       secondCard.css('top', '0px');
-    //       secondCard.css('left', '0px');
-    //       firstCard.css('top', '0px');
-    //       firstCard.css('left', '0px');
-    //       secondCard.insertBefore(firstCard);
-    //       if (secondCardId%5===1) {
-    //         firstCard.insertBefore(afterSecondCard);
-    //       }
-    //       else {
-    //         firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-    //       };
-    //       secondCard.attr('id',firstCardId);
-    //       firstCard.attr('id',secondCardId);
-    //       firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-    //       secondCard = $('#'+secondCardId);
-    //
-    //       // firstCard.prependTo(".row1");
-    //       // console.log(secondCard.attr('id'));
-    //       // secondCard.attr('id=2')
-    //       animating = false;
-    //     });
-    //   }
-    //   arrOfCardsToBeShuffled.splice(0,2); //splice away first 2 cards.
-    //   console.log(arrOfCardsToBeShuffled);
-    //   console.log(arrOfUnmatchedCardsId);
-    // } //end of even-number and length=5 scenario
-  // } //end of while loop
 }
-
-// hahaha();
-
-
-
-
-
-
-
-
-
-
-// need to think of how to differentiate between playerOne's and playerTwo's bonuses...
