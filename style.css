@@ -61,11 +61,11 @@ button {
 }
 
 .playerOneStatusBar, .playerTwoStatusBar {
-  border: 2px solid black;
+  border: 2.5px solid black;
   border-radius: 8px;
   font-size: 16px;
-  text-align: left;
-  /*padding: 14px;*/
+  text-align: center;
+  padding: 10px;
   width: 340px;
   height: 30px;
 }
@@ -144,8 +144,10 @@ button {
   justify-content: space-around;
 }
 .btmBoxes {
-  border: 1px solid black;
+  border: 2.5px solid black;
   border-radius: 8px;
+  font-family: 'Arial';
+  font-size: 20px;
   padding: 20px;
 }
 

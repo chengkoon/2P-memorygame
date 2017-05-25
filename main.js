@@ -23,6 +23,7 @@ var onceForPlayerOne = false; //for cursorDisappear, to make sure this function 
 var onceForPlayerTwo = false;
 var xrayCardsLeftPlayerOne = 3;
 var xrayCardsLeftPlayerTwo = 3;
+var tempPlayerOnePrevId, tempPlayerTwoPrevId;
 var boardRotationPlayerOne = 'normal';
 var boardRotationPlayerTwo = 'normal';
 var timerForPlayerOneCursorSlow = 10;
@@ -159,19 +160,42 @@ var moveCursor = function(whichPlayer) {
       $('.card').removeClass("white1 cursor1");
       $('#'+currentPlayerOneCursorPosition).toggleClass("white1 cursor1");
   }
+
   else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'xray') && (xrayCardsLeftPlayerOne >= 0)) {
+
     if (xrayCardsLeftPlayerOne === 0) { //clear last xray-ed card before returning to 'normal'
+
       $('.card').removeClass("red cursor1");
+      $('#'+tempPlayerOnePrevId+'> .front').empty(); // removes previously xrayed card
+      $('#'+currentPlayerOneCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerOnePrevId+'> .front'); // clones back the jQuery logo front
+
       $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
-      $('.playerOneBox .front').empty();
+      // $('.playerOneBox .front i').empty();
       statusOfPlayerOneCursor === 'normal';
     }
-    else if (xrayCardsLeftPlayerOne > 0) {
+
+    else if (xrayCardsLeftPlayerOne === 3) { // first xray card, no prev xray-ed card to remove
       $('.card').removeClass("red cursor1");
-      $('.playerOneBox .front').empty(); //removes previous xray-ed card
-      xrayCardsLeftPlayerOne--;
+      $('#'+currentPlayerOneCursorPosition+'> .front').empty(); // removes current card's logo
+      $('#'+currentPlayerOneCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerOneCursorPosition+'> .front'); // xray back of current card
       $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+
+      tempPlayerOnePrevId = currentPlayerOneCursorPosition;
+      xrayCardsLeftPlayerOne--;
+    }
+
+    else if (xrayCardsLeftPlayerOne > 0) {
+
+      $('.card').removeClass("red cursor1");
+      $('#'+tempPlayerOnePrevId+'> .front').empty(); // removes previously xrayed card
+      $('#'+currentPlayerOneCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerOnePrevId+'> .front'); // clones back the jQuery logo front
+
+      $('#'+currentPlayerOneCursorPosition+'> .front').empty(); // removes current card's logo
       $('#'+currentPlayerOneCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerOneCursorPosition+'> .front'); //xray
+      $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+
+      tempPlayerOnePrevId = currentPlayerOneCursorPosition;
+      xrayCardsLeftPlayerOne--;
     }
   }
 
@@ -240,19 +264,39 @@ var moveCursor = function(whichPlayer) {
       $('.card').removeClass("white2 cursor2");
       $('#'+currentPlayerTwoCursorPosition).toggleClass("white2 cursor2");
     }
+
     else if ((whichPlayer === 'playerTwo') && (statusOfPlayerTwoCursor === 'xray') && (xrayCardsLeftPlayerTwo >= 0)) {
       if (xrayCardsLeftPlayerTwo === 0) {
+
         $('.card').removeClass("blue cursor2");
+        $('#'+tempPlayerTwoPrevId+'> .front').empty(); // removes previously xrayed card
+        $('#'+currentPlayerTwoCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerTwoPrevId+'> .front'); // clones back the jQuery logo front
+
         $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
-        $('.playerTwoBox .front').empty();
         statusOfPlayerTwoCursor === 'normal';
       }
+
+      else if (xrayCardsLeftPlayerTwo === 3) { // first card to be xray-ed, no previous xray-ed card to empty
+        $('.card').removeClass("blue cursor2");
+        $('#'+currentPlayerTwoCursorPosition+'> .front').empty(); // removes current card's logo
+        $('#'+currentPlayerTwoCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerTwoCursorPosition+'> .front'); // xray back of current card
+        $('#'+currentPlayerTwoCursorPosition).toggleClass("red cursor1");
+
+        tempPlayerTwoPrevId = currentPlayerTwoCursorPosition;
+        xrayCardsLeftPlayerTwo--;
+      }
+
       else if (xrayCardsLeftPlayerTwo > 0) {
         $('.card').removeClass("blue cursor2");
-        $('.playerTwoBox .front').empty();
-        xrayCardsLeftPlayerTwo--;
-        $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
+        $('#'+tempPlayerTwoPrevId+'> .front').empty(); // removes previously xrayed card
+        $('#'+currentPlayerTwoCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerTwoPrevId+'> .front'); // clones back the jQuery logo front
+
+        $('#'+currentPlayerTwoCursorPosition+'> .front').empty(); // removes current card's logo
         $('#'+currentPlayerTwoCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerTwoCursorPosition+'> .front'); //xray
+        $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
+        
+        tempPlayerTwoPrevId = currentPlayerTwoCursorPosition;
+        xrayCardsLeftPlayerTwo--;
       }
 
     }

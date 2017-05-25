@@ -66,7 +66,42 @@
 
 
 
+  else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'xray') && (xrayCardsLeftPlayerOne >= 0)) {
 
+    if (xrayCardsLeftPlayerOne === 0) { //clear last xray-ed card before returning to 'normal'
+
+      $('.card').removeClass("red cursor1");
+      $('#'+tempPlayerOnePrevId+'> .front').empty(); // removes previously xrayed card
+      $('#'+currentPlayerOneCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerOnePrevId+'> .front'); // clones back the jQuery logo front
+
+      $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+      statusOfPlayerOneCursor === 'normal';
+    }
+
+    else if (xrayCardsLeftPlayerOne === 3) { // first xray card, no prev xray-ed card to remove
+      $('.card').removeClass("red cursor1");
+      $('#'+currentPlayerOneCursorPosition+'> .front').empty(); // removes current card's logo
+      $('#'+currentPlayerOneCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerOneCursorPosition+'> .front'); // xray back of current card
+      $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+
+      tempPlayerOnePrevId = currentPlayerOneCursorPosition;
+      xrayCardsLeftPlayerOne--;
+    }
+
+    else if (xrayCardsLeftPlayerOne > 0) {
+
+      $('.card').removeClass("red cursor1");
+      $('#'+tempPlayerOnePrevId+'> .front').empty(); // removes previously xrayed card
+      $('#'+currentPlayerOneCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerOnePrevId+'> .front'); // clones back the jQuery logo front
+
+      $('#'+currentPlayerOneCursorPosition+'> .front').empty(); // removes current card's logo
+      $('#'+currentPlayerOneCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerOneCursorPosition+'> .front'); //xray
+      $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+
+      tempPlayerOnePrevId = currentPlayerOneCursorPosition;
+      xrayCardsLeftPlayerOne--;
+    }
+  }
 
 
 
