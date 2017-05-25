@@ -1,4 +1,4 @@
-var classesOfImages = ['fa-bomb bomb bonus', 'fa-search', 'fa-search', 'fa-recycle recycle2 bonus',
+var classesOfImages = ['fa-bomb bomb', 'fa-search', 'fa-search', 'fa-recycle recycle2 bonus',
   'fa-recycle recycle2 bonus', 'fa-pause-circle-o pause bonus', 'fa-pause-circle-o pause bonus', 'fa-arrows-alt shuffle bonus',
   'fa-arrows-alt shuffle bonus', 'fa-eye-slash disappear bonus', 'fa-eye-slash disappear bonus', 'fa-eye xray bonus', 'fa-eye xray bonus',
   'fa-snowflake-o','fa-snowflake-o','fa-user-circle','fa-user-circle',
@@ -11,7 +11,9 @@ var numberOfFlippedCardsForPlayerOne = 0;
 var numberOfFlippedCardsForPlayerTwo = 0;
 var pairsOfMatchedCardsPlayerOne = 0;
 var pairsOfMatchedCardsPlayerTwo = 0;
-var timer = 300;
+var scoreOfPlayerOne = 0;
+var scoreOfPlayerTwo = 0;
+var timer = 10;
 var timerId = 'ongoing';
 var timerForPlayerOneCursorDisappear = 10;
 var timerForPlayerTwoCursorDisappear = 10;
@@ -30,6 +32,28 @@ var restart = function() {
   $('.card').removeClass("red cursor1 blue cursor2");
   $('#1').toggleClass("red cursor1");
   $('#26').toggleClass("blue cursor2");
+  currentPlayerOneCursorPosition = 1;
+  currentPlayerTwoCursorPosition = 26;
+  numberOfFlippedCardsForPlayerOne = 0;
+  numberOfFlippedCardsForPlayerTwo = 0;
+  pairsOfMatchedCardsPlayerOne = 0;
+  pairsOfMatchedCardsPlayerTwo = 0;
+  scoreOfPlayerOne = 0;
+  scoreOfPlayerTwo = 0;
+  timer = 200;
+  timerId = 'ongoing';
+  timerForPlayerOneCursorDisappear = 10;
+  timerForPlayerTwoCursorDisappear = 10;
+  statusOfPlayerOneCursor = 'normal';
+  statusOfPlayerTwoCursor = 'normal';
+  onceForPlayerOne = false; //for cursorDisappear, to make sure this function or powerup happens only ONCE
+  onceForPlayerTwo = false;
+  xrayCardsLeftPlayerOne = 3;
+  xrayCardsLeftPlayerTwo = 3;
+  boardRotationPlayerOne = 'normal';
+  boardRotationPlayerTwo = 'normal';
+  timerForPlayerOneCursorSlow = 10;
+  timerForPlayerTwoCursorSlow = 10;
 }
 
 function shuffle(array) { // Fisher-Yates shuffle
@@ -68,22 +92,41 @@ var randomAssignImages = function(player) {
   }
 }
 
+
 var updateOrCheckScore = function(player) {
   if (player === 'playerOne') {
-    $('.playerOneScore').text(pairsOfMatchedCardsPlayerOne*5);
+    $('.playerOneScore').text(scoreOfPlayerOne);
   }
   else if (player === 'playerTwo') {
-    $('.playerTwoScore').text(pairsOfMatchedCardsPlayerTwo*5);
+    $('.playerTwoScore').text(scoreOfPlayerTwo);
+  }
+}
+
+var checkWinner = function() {
+  if (scoreOfPlayerOne > scoreOfPlayerTwo) {
+    return "Player One!";
+  }
+  else if (scoreOfPlayerTwo > scoreOfPlayerOne) {
+    return "Player Two!";
+  }
+  else {
+    return "It's a draw!"
   }
 }
 
 var updateTime = function() {
+  if (isGameOver() === true) {
+    //do the same as below;
+    $('.playerOneStatusBar, .playerTwoStatusBar').replaceWith("<div class='winner'>Winner is..." + checkWinner() + "</div>");
+    clearInterval(timeInterval);
+    return false;
+  }
   if (timerId === 'ongoing') {
     $('.timerBox').text(timer + ' SEC');
     timeInterval = setInterval(function(){
       timer--;
       if (timer === 0) {
-        alert("Time's up!");
+        $('.playerOneStatusBar, .playerTwoStatusBar').replaceWith("<div class='winner'>Winner is..." + checkWinner() + "</div>");
         clearInterval(timeInterval);
         return false;
       }
@@ -94,9 +137,9 @@ var updateTime = function() {
 
 var moveCursor = function(whichPlayer) {
 
-//  below is moveCursor for playerOne
-  // if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'white') && (onceForPlayerOne === false)) { //playerOne suffers cursorDisappear()
-  if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'gone')) {
+/* ------------moveCursor for playerOne-------------- */
+
+  if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'gone')) { //for cursorDisappear effect
     $('.card').removeClass("red cursor1");
     $('#'+currentPlayerOneCursorPosition).toggleClass("white1 cursor1"); //distinguish from p2's white2, as an undifferentiated '.white' will cause conflict
     statusOfPlayerOneCursor = 'gone2' //to make sure the setInterval below is started once only
@@ -109,8 +152,9 @@ var moveCursor = function(whichPlayer) {
         $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
       }
     },1000) // the problem is the timer-- accelerates every time playerOne hits the direction button
+            // ^ this problem is solved by changing statusOfPlayerOneCursor from 'gone' to 'gone2'
   }
-  // else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'white') && (onceForPlayerOne === true)) {
+
     else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'gone2')) {
       $('.card').removeClass("white1 cursor1");
       $('#'+currentPlayerOneCursorPosition).toggleClass("white1 cursor1");
@@ -132,15 +176,21 @@ var moveCursor = function(whichPlayer) {
   }
 
   else if (  (whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'slowed')         ) {
-    $('.card').removeClass("red cursor1");
-    statusOfPlayerOneCursor = 'slowed2'; //stops player's movement, preventing player from simply moving again to escape the slow effect
-    $('.red').css('transition','10000s ease');
-    $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
-    setTimeout(function() {
-      statusOfPlayerOneCursor = 'slowed'
-    },1000)
+      $('.card').removeClass("red cursor1");
+      statusOfPlayerOneCursor = 'slowed2'; //stops player's movement, preventing player from simply moving again to escape the slow effect
+      $('.red').css('transition','10000s ease');
+      $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
+      setTimeout(function() {
 
-  }
+          statusOfPlayerOneCursor = 'slowed';
+
+        // if (timerForPlayerOneCursorSlow <= 0) {
+        //   statusOfPlayerOneCursor = 'normal';
+        //   timerForPlayerOneCursorSlow = 0;
+        // }
+      },1000)
+
+    }
 
   else if (   (whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'normal')   ) {
     $('.card').removeClass("red cursor1");
@@ -227,7 +277,7 @@ var moveCursor = function(whichPlayer) {
 var canMoveOrNot = function(direction) {
   //add one general if condition: if isGameOver === false
   // if (isGameOver() === false) {
-  if (boardRotationPlayerOne === 'rotated') {
+  if (boardRotationPlayerOne !== 'normal') {
     if ((direction.which === 68) && (currentPlayerOneCursorPosition >= 6)) { //'D' key - move right - need it to be a -5 to Id.
       currentPlayerOneCursorPosition -= 5;
       moveCursor('playerOne');
@@ -337,6 +387,9 @@ var checkMatch = function(player) {
     if (numberOfFlippedCardsForPlayerOne === 0) {
       $(".cursor1").addClass('flipped1');
       numberOfFlippedCardsForPlayerOne++;
+              if (checkForBomb('flipped1')) {
+                return true;
+              }
     }
     else if (numberOfFlippedCardsForPlayerOne === 1) {
       $(".cursor1").addClass('flipped2'); // add a condition here that states that IF ONLY it is RED and NOT .matched at the same time
@@ -349,11 +402,15 @@ var checkMatch = function(player) {
           unleashBonus('playerOne');
         }
         pairsOfMatchedCardsPlayerOne++;
+        scoreOfPlayerOne += 5;
         updateOrCheckScore('playerOne');
         numberOfFlippedCardsForPlayerOne = 0;
         return;
       }
       else {
+        if (checkForBomb('flipped2')) {
+          return true; //if second flipped card is a bomb, skip the setTimeout below
+        }
         setTimeout(function() {
           $('.flipped1, .flipped2').flip(false);
           $('.card').removeClass('flipped1 flipped2');
@@ -395,8 +452,10 @@ var checkMatch = function(player) {
 
     if (numberOfFlippedCardsForPlayerTwo === 0) {
       $(".cursor2").addClass('flipped3');
-
       numberOfFlippedCardsForPlayerTwo++;
+      if (checkForBomb('flipped3')) {
+        return true;
+      }
     }
     else if (numberOfFlippedCardsForPlayerTwo === 1) {
       $(".cursor2").addClass('flipped4'); // add a condition here that states that IF ONLY it is RED and NOT .matched at the same time
@@ -410,11 +469,15 @@ var checkMatch = function(player) {
           unleashBonus('playerTwo');
         }
         pairsOfMatchedCardsPlayerTwo++;
+        scoreOfPlayerTwo += 5;
         updateOrCheckScore('playerTwo');
         numberOfFlippedCardsForPlayerTwo = 0;
         return;
       }
       else {
+        if (checkForBomb('flipped4')) {
+          return true;
+        }
         setTimeout(function() {
           $('.flipped3, .flipped4').flip(false);
           $('.card').removeClass('flipped3 flipped4');
@@ -437,38 +500,61 @@ var isGameOver = function() {
 
 
 $(document).ready(function(){
-  restart();
-  updateTime();
-  updateOrCheckScore('playerOne');
-  updateOrCheckScore('playerTwo');
-  randomAssignImages('playerOne');
-  randomAssignImages('playerTwo');
-  $(".card").flip({
-    trigger: 'manual'
-  });
+  $('div.notHidden').fadeTo('slow', 0.1);
+  $('div.firstBox').fadeIn(2000).removeClass('hidden');
+  // restart();
+  // updateOrCheckScore('playerOne');
+  // updateOrCheckScore('playerTwo');
+  // randomAssignImages('playerOne');
+  // randomAssignImages('playerTwo');
+  // $(".card").flip({
+  //   trigger: 'manual'
+  // });
 
-  console.log($('.pause').parent());
+  $('button').click(function(){
+    $('div.firstBox').fadeOut(1000).addClass('hidden');
+    $('div.notHidden').fadeTo('slow', 1);
+    restart();
+    updateTime();
+    updateOrCheckScore('playerOne');
+    updateOrCheckScore('playerTwo');
+    randomAssignImages('playerOne');
+    randomAssignImages('playerTwo');
+    $(".card").flip({
+      trigger: 'manual'
+    });
+    console.log("bomb is at: ",$('.bomb').parent());
+    console.log("pause is at: ", $('.pause').parent());
+    console.log("rotation is at: ",$('.recycle2').parent());
+  })
+
+
+  // console.log("bomb is at: ",$('.bomb').parent());
+  // console.log("pause is at: ", $('.pause').parent());
+  // console.log("rotation is at: ",$('.recycle2').parent());
 
   // var firstCardId = 1,
   //     secondCardId = 3;
 
 
   $(document).keyup(function(event) {
+
     if (isGameOver() === false) {
       if ((event.which === 86) && (canFlipOrNot('playerOne')) ) { //need one more condition...if !hasClass('matched'), or how about abstract out to a function()
         console.log("numberOfFlippedCardsForPlayerOne is now: ",numberOfFlippedCardsForPlayerOne);
-        $(".cursor1").flip(true);
+        $(".cursor1").flip(true); // flip function is from jquery.flip.min.js (external cdn)
         checkMatch('playerOne');
       }
 
       else if ((event.which === 77) && (canFlipOrNot('playerTwo'))  ) {
-        $(".cursor2").flip(true);
+        $(".cursor2").flip(true); // flip function is from jquery.flip.min.js (external cdn)
         checkMatch('playerTwo');
       }
       else if (event.which === 88) { //test for shuffleCard
 
         // prepareForCardShuffle(); //make sure to stop victim's cursor from moving when implementing cardShuffle!
-        prepareForCardShuffle();
+        prepareForCardShuffle('playerTwo');
+
         // cardShuffle(arrOfUnmatchedCardsId);
 
         // cardShuffle();
@@ -532,7 +618,9 @@ $(document).ready(function(){
 
     }
     else {
-      alert("The game has ended!");
+      // alert("The game has ended!"); //doesn't work well with keydown!
+
+      console.log("the game has ended");
     }
   })
 

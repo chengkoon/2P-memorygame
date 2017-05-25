@@ -19,46 +19,46 @@ var unleashBonus = function(player) {
   if (player === 'playerOne') {
     if ($('.matched > .back > .bonus').hasClass('disappear')) {
       $('.matched > .back > i').removeClass('bonus'); //to prevent future complications
-      cursorDisappear('playerTwo'); // this effect is on the OPPONENT!
+      cursorDisappear('playerTwo'); // this effect is on the opponent
     }
     else if ($('.matched > .back > .bonus').hasClass('recycle2')) {
       $('.matched > .back > i').removeClass('bonus'); //to prevent future complications
-      rotateBoard('playerTwo'); // this effect is on the OPPONENT!
+      rotateBoard('playerTwo'); // this effect is on the opponent
     }
     else if ($('.matched > .back > .bonus').hasClass('xray')) {
       $('.matched > .back > i').removeClass('bonus'); //to prevent future complications
-      xrayCursor('playerOne'); // this effect is on the OPPONENT!
+      xrayCursor('playerOne'); // this effect is on this player
     }
     else if ($('.matched > .back > .bonus').hasClass('shuffle')) {
       $('.matched > .back > i').removeClass('bonus'); //to prevent future complications
-      prepareForCardShuffle('playerTwo'); // this effect is on the OPPONENT!
+      prepareForCardShuffle('playerTwo'); // this effect is on the opponent
     }
     else if ($('.matched > .back > .bonus').hasClass('pause')) {
       $('.matched > .back > i').removeClass('bonus'); //to prevent future complications
-      pausePausePause('playerTwo'); // this effect is on the OPPONENT!
+      pausePausePause('playerTwo'); // this effect is on the opponent
     }
   }
 
   else if (player === 'playerTwo') {
     if ($('.matched2 > .back > .bonus').hasClass('disappear')) {
       $('.matched2 > .back > i').removeClass('bonus'); //to prevent future complications
-      cursorDisappear('playerOne'); // this effect is on the OPPONENT!
+      cursorDisappear('playerOne'); // this effect is on the opponent
     }
     else if ($('.matched2 > .back > .bonus').hasClass('recycle2')) {
       $('.matched2 > .back > i').removeClass('bonus'); //to prevent future complications
-      rotateBoard('playerOne'); // this effect is on the OPPONENT!
+      rotateBoard('playerOne'); // this effect is on the opponent
     }
     else if ($('.matched2 > .back > .bonus').hasClass('xray')) {
       $('.matched2 > .back > i').removeClass('bonus'); //to prevent future complications
-      xrayCursor('playerTwo'); // this effect is on the OPPONENT!
+      xrayCursor('playerTwo'); // this effect is on this player
     }
     else if ($('.matched2 > .back > .bonus').hasClass('shuffle')) {
       $('.matched2 > .back > i').removeClass('bonus'); //to prevent future complications
-      prepareForCardShuffle('playerOne'); // this effect is on the OPPONENT!
+      prepareForCardShuffle('playerOne'); // this effect is on the opponent
     }
     else if ($('.matched2 > .back > .bonus').hasClass('pause')) {
       $('.matched2 > .back > i').removeClass('bonus'); //to prevent future complications
-      pausePausePause('playerOne'); // this effect is on the OPPONENT!
+      pausePausePause('playerOne'); // this effect is on the opponent
     }
   }
 }
@@ -108,81 +108,92 @@ var pausePausePause = function(victim) {
   if (victim === 'playerTwo') {
     statusOfPlayerTwoCursor = 'slowed';
     setTimeout(function() {
-      statusOfPlayerTwoCursor = 'normal';
+      preventKeySpamming2 = setInterval(function() {
+        statusOfPlayerTwoCursor = 'normal';
+      },100)
       $('.blue').css('transition','0.1s ease');
     },10000)
+    setTimeout(function() {
+      clearInterval(preventKeySpamming2);
+    },13000)
   }
   if (victim === 'playerOne') {
     statusOfPlayerOneCursor = 'slowed';
+
+
     setTimeout(function() {
       //set a setInterval here to 'rapidfire' setting (100ms) status back to 'normal', in case player spams direction key.
-      statusOfPlayerOneCursor = 'normal';
+      preventKeySpamming1 = setInterval(function() {
+        statusOfPlayerOneCursor = 'normal';
+      },100)
+
       $('.red').css('transition','0.1s ease');
     },10000)
+    setTimeout(function() {
+      clearInterval(preventKeySpamming1);
+    },13000)
   }
 }
 
-// $(document).ready(function() {
-//
-//
-//
-//   var prepareForCardShuffle = function() {
-//
-//
-//     var firstCardId = 1,
-//         secondCardId = 3;
-//     var firstCard = $('#'+firstCardId),
-//         secondCard = $('#'+secondCardId),
-//         beforeSecondCard = $('#'+(secondCardId-1)),
-//         afterSecondCard = $('#'+(secondCardId+1)),
-//         distanceTop = firstCard.offset().top - secondCard.offset().top,
-//         distanceLeft = firstCard.offset().left - secondCard.offset().left,
-//         animating = false;
-//
-//
-//     if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) {
-//       animating = true;
-//       $.when(firstCard.animate({
-//         top: -distanceTop,
-//         left: -distanceLeft
-//       }, 2000),
-//       secondCard.animate({
-//         top:distanceTop,
-//         left:distanceLeft
-//       }, 2000)).done(function() {
-//         secondCard.css('top', '0px');
-//         secondCard.css('left', '0px');
-//         firstCard.css('top', '0px');
-//         firstCard.css('left', '0px');
-//         secondCard.insertBefore(firstCard);
-//         if (secondCardId%5===1) {
-//           firstCard.insertBefore(afterSecondCard);
-//         };
-//         else if {
-//           firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-//         };
-//         secondCard.attr('id',firstCardId);
-//         firstCard.attr('id',secondCardId);
-//         firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-//         secondCard = $('#'+secondCardId);
-//
-//         // firstCard.prependTo(".row1");
-//         // console.log(secondCard.attr('id'));
-//         // secondCard.attr('id=2')
-//         animating = false;
-//       });
-//     }
-//   }
-//
-// })
+var checkForBomb = function(flippedNum) {
 
-// $(document).ready(function() {
+  if (flippedNum === 'flipped1') { //when player one flips over the bomb in the first flip
+    if ($('.flipped1 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped1').flip(false);
+        $('.card').removeClass('flipped1');
+        numberOfFlippedCardsForPlayerOne = 0;
+        scoreOfPlayerOne -= 10;
+        $('.playerOneScore').text(scoreOfPlayerOne);
+      },800)
+      return true;
+    }
+  }
+  else if (flippedNum === 'flipped2') { //when player one flips over the bomb in the second flip
+    if ($('.flipped2 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped1, .flipped2').flip(false);
+        $('.card').removeClass('flipped1 flipped2');
+        numberOfFlippedCardsForPlayerOne = 0;
+        scoreOfPlayerOne -= 10;
+        $('.playerOneScore').text(scoreOfPlayerOne);
+      },800)
+      return true;
+    }
+  }
+  if (flippedNum === 'flipped3') { //when player two flips over the bomb in the first flip
+    if ($('.flipped3 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped3').flip(false);
+        $('.card').removeClass('flipped3');
+        numberOfFlippedCardsForPlayerTwo = 0;
+        scoreOfPlayerTwo -= 10;
+        $('.playerTwoScore').text(scoreOfPlayerTwo);
+      },800)
+      return true;
+    }
+  }
+  else if (flippedNum === 'flipped4') { //when player two flips over the bomb in the second flip
+    if ($('.flipped4 > .back > i').hasClass('bomb')) {
+      setTimeout(function() {
+        $('.flipped3, .flipped4').flip(false);
+        $('.card').removeClass('flipped3 flipped4');
+        numberOfFlippedCardsForPlayerTwo = 0;
+        scoreOfPlayerTwo -= 10;
+        $('.playerTwoScore').text(scoreOfPlayerTwo);
+      },800)
+      return true;
+    }
+  }
 
-var arrOfUnmatchedCardsIdPlayerOne = [];
-var arrOfUnmatchedCardsIdPlayerTwo = [];
+
+
+}
 
 var prepareForCardShuffle = function(victim) {
-
+  
+  var arrOfUnmatchedCardsIdPlayerOne = [];
+  var arrOfUnmatchedCardsIdPlayerTwo = [];
   // var arrOfUnmatchedCardsId = [];
 
   if (victim === 'playerOne') {
@@ -291,66 +302,6 @@ var cardShuffle = function(arrOfUnmatchedCardsId) {
           // secondCard.attr('id=2')
           animating = false;
         });
-      // }
-      // arrOfCardsToBeShuffled.splice(0,1); //now left 2 cards, even number. will skip ===3 scenario in next loop
-    // } //end of odd-number scenario ---------------------------------------------
-
-//start of even-number and length=5 scenario------------------------------------
-
-    // else if ((arrOfCardsToBeShuffled.length > 3) || (arrOfCardsToBeShuffled.length < 3)){
-    //
-    //
-    //
-    //   firstCardId = arrOfCardsToBeShuffled[0];
-    //   secondCardId = arrOfCardsToBeShuffled[1];
-    //
-    //
-    //   firstCard = $('#'+firstCardId),
-    //   secondCard = $('#'+secondCardId),
-    //   beforeSecondCard = $('#'+(secondCardId-1)),
-    //   afterSecondCard = $('#'+(secondCardId+1)),
-    //   distanceTop = firstCard.offset().top - secondCard.offset().top,
-    //   distanceLeft = firstCard.offset().left - secondCard.offset().left,
-    //   animating = false;
-    //
-    //
-    //   if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) { //again, this condition is not necessary now..
-    //     animating = true;
-    //     $.when(firstCard.animate({
-    //       top: -distanceTop,
-    //       left: -distanceLeft
-    //     }, 2000),
-    //     secondCard.animate({
-    //       top:distanceTop,
-    //       left:distanceLeft
-    //     }, 2000)).done(function() {
-    //       secondCard.css('top', '0px');
-    //       secondCard.css('left', '0px');
-    //       firstCard.css('top', '0px');
-    //       firstCard.css('left', '0px');
-    //       secondCard.insertBefore(firstCard);
-    //       if (secondCardId%5===1) {
-    //         firstCard.insertBefore(afterSecondCard);
-    //       }
-    //       else {
-    //         firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-    //       };
-    //       secondCard.attr('id',firstCardId);
-    //       firstCard.attr('id',secondCardId);
-    //       firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-    //       secondCard = $('#'+secondCardId);
-    //
-    //       // firstCard.prependTo(".row1");
-    //       // console.log(secondCard.attr('id'));
-    //       // secondCard.attr('id=2')
-    //       animating = false;
-    //     });
-    //   }
-    //   arrOfCardsToBeShuffled.splice(0,2); //splice away first 2 cards.
-    //   console.log(arrOfCardsToBeShuffled);
-    //   console.log(arrOfUnmatchedCardsId);
-    // } //end of even-number and length=5 scenario
-  // } //end of while loop
 }
 
 // hahaha();

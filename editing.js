@@ -54,10 +54,23 @@
         $('.card').removeClass("white1 cursor1");
         $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
       }
-    },1000) // the problem is the timer-- accelerates every time playerOne hits the direction button
+    },1000) // the problem is the timer-- accelerates every time playerOne hits the direction button (this is solved by gone2)
   }
   // else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'white') && (onceForPlayerOne === true)) {
     else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'gone2')) {
       $('.card').removeClass("white1 cursor1");
       $('#'+currentPlayerOneCursorPosition).toggleClass("white1 cursor1");
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  //

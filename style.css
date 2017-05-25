@@ -1,6 +1,80 @@
+@font-face {
+  font-family: 'pixel';
+  src: url('font.ttf');
+}
+
+div.hidden {
+  display:none;
+  z-index: -1;
+}
+
+.firstBox {
+  font-family: 'Arial';
+  line-height: 50px;
+  border: 2px solid black;
+  background-color: white;
+  opacity:0.9;
+  padding: 30px;
+  left: 28%;
+  top: 20%;
+  z-index: 100;
+  /*display: flex;*/
+  position: absolute;
+  /*align-self: center;*/
+  /*flex-wrap:wrap;
+  flex-direction: column;*/
+}
+.firstBox > div {
+  margin: 10px;
+
+}
+.firstBox > .title {
+  text-align: center;
+}
+
+.p1instructions > span {
+  color: red;
+}
+.p2instructions > span {
+  color: blue;
+}
+.bothPlayersInstructions > span {
+  font-weight: bold;
+}
+
+button {
+  padding: 7px;
+  display: block;
+  margin: 10px auto;
+  background-color: grey;
+  border: none;
+}
+
+.topBar {
+  font-family: 'Arial';
+  border: 1px solid white;
+  width: 1180px;
+  height: 70px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.playerOneStatusBar, .playerTwoStatusBar {
+  border: 2px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: left;
+  /*padding: 14px;*/
+  width: 340px;
+  height: 30px;
+}
+
+
 .playerScreens {
   display: flex;
   justify-content: space-around;
+
 }
 
 .playerOneBox, .playerTwoBox {
@@ -13,12 +87,14 @@
 
 .divider {
   border: 1px solid black;
+  background-color: black;
   width:1px;
   height: 430px;
 }
 
 .card {
-  border: 1px solid black;
+  border: 2.5px solid black;
+  /*background-color: none;*/
   /*background: none;*/
   border-radius: 8px;
   width: 77px;
@@ -31,9 +107,15 @@
 }
 
 .back, .front {
+  text-align: center;
+  vertical-align: middle;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.front img {
+  height: 64px;
 }
 
 /*.back, .front {
@@ -85,4 +167,14 @@
 .rotate90CounterClockwise {
   transform:rotate(-90deg);
   transition-duration:1s;
+}
+
+.winner {
+  border: 1px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: left;
+  padding: 14px;
+  width: 340px;
+  height: 30px;
 }
