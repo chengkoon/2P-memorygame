@@ -93,12 +93,55 @@ var randomAssignImages = function(player) {
   }
 }
 
+var flashMessage = function(player, color) {
+  if (player === 'playerOne' && color === 'green') {
+    $(".playerOneScoreBackground").removeClass("flashGreen");
+    $(".playerOneScoreBackground").removeClass("flashRed");
+    setTimeout(function() {
+        $(".playerOneScoreBackground").addClass("flashGreen");
+    }, 100);
+  }
+  else if (player === 'playerOne' && color === 'red') {
+    $(".playerOneScoreBackground").removeClass("flashRed");
+    $(".playerOneScoreBackground").removeClass("flashGreen");
+    setTimeout(function() {
+        $(".playerOneScoreBackground").addClass("flashRed");
+    }, 100);
+  }
+  else if (player === 'playerTwo' && color === 'green') {
+    $(".playerTwoScoreBackground").removeClass("flashGreen");
+    $(".playerTwoScoreBackground").removeClass("flashRed");
+    setTimeout(function() {
+        $(".playerTwoScoreBackground").addClass("flashGreen");
+    }, 100);
+  }
+  else if (player === 'playerTwo' && color === 'red') {
+    $(".playerTwoScoreBackground").removeClass("flashRed");
+    $(".playerTwoScoreBackground").removeClass("flashGreen");
+    setTimeout(function() {
+        $(".playerTwoScoreBackground").addClass("flashRed");
+    }, 100);
+  }
+}
 
-var updateOrCheckScore = function(player) {
-  if (player === 'playerOne') {
+
+var updateScore = function(player, condition) {
+  if (player === 'playerOne' && condition === 'matched') {
+    pairsOfMatchedCardsPlayerOne++;
+    scoreOfPlayerOne += 10;
     $('.playerOneScore').text(scoreOfPlayerOne);
   }
-  else if (player === 'playerTwo') {
+  else if (player === 'playerOne' && condition === 'bomb') {
+    scoreOfPlayerOne -= 10;
+    $('.playerOneScore').text(scoreOfPlayerOne);
+  }
+  else if (player === 'playerTwo' && condition === 'matched') {
+    pairsOfMatchedCardsPlayerTwo++;
+    scoreOfPlayerTwo += 10;
+    $('.playerTwoScore').text(scoreOfPlayerTwo);
+  }
+  else if (player === 'playerTwo' && condition === 'bomb') {
+    scoreOfPlayerTwo -= 10;
     $('.playerTwoScore').text(scoreOfPlayerTwo);
   }
 }
@@ -294,7 +337,7 @@ var moveCursor = function(whichPlayer) {
         $('#'+currentPlayerTwoCursorPosition+'> .front').empty(); // removes current card's logo
         $('#'+currentPlayerTwoCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerTwoCursorPosition+'> .front'); //xray
         $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
-        
+
         tempPlayerTwoPrevId = currentPlayerTwoCursorPosition;
         xrayCardsLeftPlayerTwo--;
       }
@@ -431,9 +474,11 @@ var checkMatch = function(player) {
     if (numberOfFlippedCardsForPlayerOne === 0) {
       $(".cursor1").addClass('flipped1');
       numberOfFlippedCardsForPlayerOne++;
-              if (checkForBomb('flipped1')) {
-                return true;
-              }
+      if (checkForBomb('flipped1')) {
+        updateScore('playerOne', 'bomb');
+        flashMessage('playerOne', 'red');
+        return;
+      }
     }
     else if (numberOfFlippedCardsForPlayerOne === 1) {
       $(".cursor1").addClass('flipped2'); // add a condition here that states that IF ONLY it is RED and NOT .matched at the same time
@@ -445,22 +490,23 @@ var checkMatch = function(player) {
         if (isThereBonus('playerOne')) {
           unleashBonus('playerOne');
         }
-        pairsOfMatchedCardsPlayerOne++;
-        scoreOfPlayerOne += 5;
-        updateOrCheckScore('playerOne');
+        updateScore('playerOne', 'matched');
+        flashMessage('playerOne', 'green');
         numberOfFlippedCardsForPlayerOne = 0;
         return;
       }
       else {
         if (checkForBomb('flipped2')) {
-          return true; //if second flipped card is a bomb, skip the setTimeout below
+          updateScore('playerOne', 'bomb');
+          flashMessage('playerOne', 'red');
+          return; //if second flipped card is a bomb, skip the setTimeout below
         }
         setTimeout(function() {
           $('.flipped1, .flipped2').flip(false);
           $('.card').removeClass('flipped1 flipped2');
           numberOfFlippedCardsForPlayerOne = 0;
         },800)
-        console.log("Nope, no match.");
+        console.log("Nope, no match for player one.");
       }
     }
   }
@@ -478,7 +524,7 @@ var checkMatch = function(player) {
   //       $('.flipped3, .flipped4').addClass('matched2');
   //       $('.matched2').removeClass('flipped3 flipped4');
   //       pairsOfMatchedCardsPlayerTwo++;
-  //       updateOrCheckScore('playerTwo');
+  //       updateScore('playerTwo');
   //       numberOfFlippedCardsForPlayerTwo = 0;
   //       return;
   //     }
@@ -498,7 +544,9 @@ var checkMatch = function(player) {
       $(".cursor2").addClass('flipped3');
       numberOfFlippedCardsForPlayerTwo++;
       if (checkForBomb('flipped3')) {
-        return true;
+        updateScore('playerTwo', 'bomb');
+        flashMessage('playerTwo', 'red');
+        return;
       }
     }
     else if (numberOfFlippedCardsForPlayerTwo === 1) {
@@ -512,22 +560,23 @@ var checkMatch = function(player) {
         if (isThereBonus('playerTwo')) {
           unleashBonus('playerTwo');
         }
-        pairsOfMatchedCardsPlayerTwo++;
-        scoreOfPlayerTwo += 5;
-        updateOrCheckScore('playerTwo');
+        updateScore('playerTwo', 'matched');
+        flashMessage('playerTwo', 'green');
         numberOfFlippedCardsForPlayerTwo = 0;
         return;
       }
       else {
         if (checkForBomb('flipped4')) {
-          return true;
+          updateScore('playerTwo', 'bomb');
+          flashMessage('playerTwo', 'red');
+          return;
         }
         setTimeout(function() {
           $('.flipped3, .flipped4').flip(false);
           $('.card').removeClass('flipped3 flipped4');
           numberOfFlippedCardsForPlayerTwo = 0;
         },800)
-        console.log("Nope, no match.");
+        console.log("Nope, no match for player two.");
       }
     }
   }
@@ -547,8 +596,8 @@ $(document).ready(function(){
   $('div.notHidden').fadeTo('slow', 0.1);
   $('div.firstBox').fadeIn(2000).removeClass('hidden');
   // restart();
-  // updateOrCheckScore('playerOne');
-  // updateOrCheckScore('playerTwo');
+  // updateScore('playerOne');
+  // updateScore('playerTwo');
   // randomAssignImages('playerOne');
   // randomAssignImages('playerTwo');
   // $(".card").flip({
@@ -560,8 +609,8 @@ $(document).ready(function(){
     $('div.notHidden').fadeTo('slow', 1);
     restart();
     updateTime();
-    updateOrCheckScore('playerOne');
-    updateOrCheckScore('playerTwo');
+    // updateScore('playerOne');
+    // updateScore('playerTwo');
     randomAssignImages('playerOne');
     randomAssignImages('playerTwo');
     $(".card").flip({

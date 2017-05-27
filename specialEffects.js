@@ -143,8 +143,6 @@ var checkForBomb = function(flippedNum) {
         $('.flipped1').flip(false);
         $('.card').removeClass('flipped1');
         numberOfFlippedCardsForPlayerOne = 0;
-        scoreOfPlayerOne -= 10;
-        $('.playerOneScore').text(scoreOfPlayerOne);
       },800)
       return true;
     }
@@ -155,8 +153,6 @@ var checkForBomb = function(flippedNum) {
         $('.flipped1, .flipped2').flip(false);
         $('.card').removeClass('flipped1 flipped2');
         numberOfFlippedCardsForPlayerOne = 0;
-        scoreOfPlayerOne -= 10;
-        $('.playerOneScore').text(scoreOfPlayerOne);
       },800)
       return true;
     }
@@ -191,7 +187,7 @@ var checkForBomb = function(flippedNum) {
 }
 
 var prepareForCardShuffle = function(victim) {
-  
+
   var arrOfUnmatchedCardsIdPlayerOne = [];
   var arrOfUnmatchedCardsIdPlayerTwo = [];
   // var arrOfUnmatchedCardsId = [];

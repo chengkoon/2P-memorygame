@@ -50,6 +50,17 @@ button {
   border: none;
 }
 
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.playerOneContainer, .partition, .playerTwoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .topBar {
   font-family: 'Arial';
   border: 1px solid white;
@@ -63,7 +74,7 @@ button {
 .playerOneStatusBar, .playerTwoStatusBar {
   border: 2.5px solid black;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 20px;
   text-align: center;
   padding: 10px;
   width: 340px;
@@ -143,12 +154,17 @@ button {
   display: flex;
   justify-content: space-around;
 }
-.btmBoxes {
+
+.scoreboardContainer, .timerContainer {
   border: 2.5px solid black;
   border-radius: 8px;
   font-family: 'Arial';
   font-size: 20px;
-  padding: 20px;
+  width: 80px;
+  margin-top: 30px;
+  /*padding: 20px;*/
+  text-align: center;
+  position: relative;
 }
 
 
@@ -179,4 +195,52 @@ button {
   padding: 14px;
   width: 340px;
   height: 30px;
+}
+
+@-webkit-keyframes matched {
+    0% {
+        background-color: Green;
+        opacity:0.7;
+    }
+    100% {
+        background-color: Green;
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes bomb {
+    0% {
+        background-color: Red;
+        opacity:0.7;
+    }
+    100% {
+        background-color: Red;
+        opacity: 0;
+    }
+}
+
+.flashGreen {
+    -webkit-animation-name: matched;
+    -webkit-animation-duration: 900ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+.flashRed {
+    -webkit-animation-name: bomb;
+    -webkit-animation-duration: 900ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+.playerOneScoreBackground, .playerTwoScoreBackground {
+  width: 99%;
+  height: 97%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.playerOneScore, .playerTwoScore {
+  background: rgba(255, 255, 255, 0);
 }
