@@ -45,9 +45,14 @@ div.hidden {
 button {
   padding: 7px;
   display: block;
-  margin: 10px auto;
+  margin: 0 auto;
   background-color: grey;
   border: none;
+}
+
+.hitSpaceText {
+  font-size: 12px;
+  text-align: center;
 }
 
 .container {
@@ -61,31 +66,19 @@ button {
   align-items: center;
 }
 
-.topBar {
-  font-family: 'Arial';
-  border: 1px solid white;
-  width: 1180px;
-  height: 70px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
-}
-
 .playerOneStatusBar, .playerTwoStatusBar {
   border: 2.5px solid black;
   border-radius: 8px;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   padding: 10px;
   width: 340px;
   height: 30px;
 }
 
-
 .playerScreens {
   display: flex;
   justify-content: space-around;
-
 }
 
 .playerOneBox, .playerTwoBox {
@@ -94,6 +87,7 @@ button {
   height: 415px;
   margin: 5px;
   transition: all 1s ease;
+  position: relative;
 }
 
 .divider {
@@ -105,16 +99,10 @@ button {
 
 .card {
   border: 2.5px solid black;
-  /*background-color: none;*/
-  /*background: none;*/
   border-radius: 8px;
   width: 77px;
   height: 77px;
   margin: 2px;
-
-   /*moved this three lines from .card to here at .back */
-  /*text-align: center;
-  vertical-align: middle;*/
 }
 
 .back, .front {
@@ -128,12 +116,6 @@ button {
 .front img {
   height: 64px;
 }
-
-/*.back, .front {
-  display: flex;
-  justify-content: center;
-  align-items: center; /*moved this three lines from .card to here at .back */
-/*}*/
 
 .red {
   background-color: red;
@@ -149,12 +131,6 @@ button {
   display: flex;
 }
 
-.btmBar {
-  padding: 30px;
-  display: flex;
-  justify-content: space-around;
-}
-
 .scoreboardContainer, .timerContainer {
   border: 2.5px solid black;
   border-radius: 8px;
@@ -166,7 +142,6 @@ button {
   text-align: center;
   position: relative;
 }
-
 
 .white1 {
   background-color: white;
@@ -196,6 +171,129 @@ button {
   width: 340px;
   height: 30px;
 }
+
+.playerOneBoxBackground, .playerTwoBoxBackground {
+  width: 99%;
+  height: 97%;
+  position: absolute;
+  background-position: center;
+  /*top: 0;
+  left: 0;*/
+}
+.bombEffect {
+    -webkit-animation-name: bombEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+@-webkit-keyframes bombEffect {
+    0% {
+        background-image: url("./img/bomb.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/bomb.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+.goneEffect {
+    -webkit-animation-name: goneEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes goneEffect {
+    0% {
+        background-image: url("./img/gone.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/gone.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+.xrayEffect {
+    -webkit-animation-name: xrayEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes xrayEffect {
+    0% {
+        background-image: url("./img/xray.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/xray.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+.slowEffect {
+    -webkit-animation-name: slowEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes slowEffect {
+    0% {
+        background-image: url("./img/slow.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/slow.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+.shuffleEffect {
+    -webkit-animation-name: shuffleEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes shuffleEffect {
+    0% {
+        background-image: url("./img/shuffle.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/shuffle.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+.rotateEffect {
+    -webkit-animation-name: rotateEffect;
+    -webkit-animation-duration: 800ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes rotateEffect {
+    0% {
+        background-image: url("./img/recycle.png");
+        background-repeat: no-repeat;
+        opacity:0.7;
+    }
+    100% {
+        background-image: url("./img/recycle.png");
+        background-repeat: no-repeat;
+        opacity: 0;
+    }
+}
+
 
 @-webkit-keyframes matched {
     0% {

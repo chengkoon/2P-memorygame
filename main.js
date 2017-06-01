@@ -13,7 +13,7 @@ var pairsOfMatchedCardsPlayerOne = 0;
 var pairsOfMatchedCardsPlayerTwo = 0;
 var scoreOfPlayerOne = 0;
 var scoreOfPlayerTwo = 0;
-var timer = 10;
+var timer = 200;
 var timerId = 'ongoing';
 var timerForPlayerOneCursorDisappear = 10;
 var timerForPlayerTwoCursorDisappear = 10;
@@ -84,11 +84,132 @@ var randomAssignImages = function(player) {
   if (player === 'playerOne') {
     for (var i=1; i<=25; i++) { //loop through each of playerOne's cards
       $('#'+i+' > .back > i').addClass(classesOfImages[i-1]);
+      if (classesOfImages[i-1].includes('bonus')) {
+        var cardClassArr = classesOfImages[i-1].split(' ');
+        var typeOfPowerUp = cardClassArr[1];
+        console.log(`p1 ${typeOfPowerUp} is at card number ${i}`);
+      }
+      else if (classesOfImages[i-1].includes('bomb')) {
+        console.log(`p1 bomb is at card number ${i}`);
+      }
     }
   }
   else if (player === 'playerTwo') {
     for (var i=26; i<=50; i++) { //loop through each of playerTwo's cards
       $('#'+i+' > .back > i').addClass(classesOfImages[i-26]);
+      if (classesOfImages[i-26].includes('bonus')) {
+        var cardClassArr = classesOfImages[i-26].split(' ');
+        var typeOfPowerUp = cardClassArr[1];
+        console.log(`p2 ${typeOfPowerUp} is at card number ${i-25}`);
+      }
+      else if (classesOfImages[i-26].includes('bomb')) {
+        var playerTwoBombCard = i-25;
+        console.log(`p2 bomb is at card number ${i-25}`);
+      }
+    }
+  }
+}
+
+var flashEffect = function(player, effect) {
+
+  if (player === 'playerOne') {
+    if (effect === 'bomb') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("bombEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("bombEffect");
+      },1000);
+    }
+    else if (effect === 'gone') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("goneEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("goneEffect");
+      },1000);
+    }
+    else if (effect === 'xray') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("xrayEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("xrayEffect");
+      },1000);
+    }
+    else if (effect === 'slow') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("slowEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("slowEffect");
+      },1000);
+    }
+    else if (effect === 'shuffle') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("shuffleEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("shuffleEffect");
+      },1000);
+    }
+    else if (effect === 'rotate') {
+      setTimeout(function() {
+        $(".playerOneBoxBackground").addClass("rotateEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerOneBoxBackground").removeClass("rotateEffect");
+      },1000);
+    }
+  }
+  else if (player === 'playerTwo') {
+    if (effect === 'bomb') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("bombEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("bombEffect");
+      },1000);
+    }
+    else if (effect === 'gone') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("goneEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("goneEffect");
+      },1000);
+    }
+    else if (effect === 'xray') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("xrayEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("xrayEffect");
+      },1000);
+    }
+    else if (effect === 'slow') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("slowEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("slowEffect");
+      },1000);
+    }
+    else if (effect === 'shuffle') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("shuffleEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("shuffleEffect");
+      },1000);
+    }
+    else if (effect === 'rotate') {
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").addClass("rotateEffect");
+      },100);
+      setTimeout(function() {
+        $(".playerTwoBoxBackground").removeClass("rotateEffect");
+      },1000);
     }
   }
 }
@@ -124,6 +245,52 @@ var flashMessage = function(player, color) {
   }
 }
 
+var updatePlayerStatusAndMessage = function(player, condition) {
+
+  if (player === 'playerOne') {
+    if (condition === 'normal') {
+      statusOfPlayerOneCursor = 'normal';
+      $('.playerOneStatus').text('Normal');
+    }
+    else if (condition === 'xray') {
+      statusOfPlayerOneCursor = 'xray';
+      $('.playerOneStatus').text("You've got xray cursor for 3 moves!");
+    }
+    else if (condition === 'slowed') {
+      statusOfPlayerOneCursor = 'slowed';
+      $('.playerOneStatus').text("Cursor slowed for 10 seconds!");
+    }
+    else if (condition === 'gone') {
+      statusOfPlayerOneCursor = 'gone';
+      $('.playerOneStatus').text("Where's my cursor?");
+    }
+    else if (condition === 'rotate') {
+      $('.playerOneStatus').text("Board is rotated!");
+    }
+  }
+
+  else if (player === 'playerTwo') {
+    if (condition === 'normal') {
+      statusOfPlayerTwoCursor = 'normal';
+      $('.playerTwoStatus').text('Normal');
+    }
+    else if (condition === 'xray') {
+      statusOfPlayerTwoCursor = 'xray';
+      $('.playerTwoStatus').text("You've got xray cursor for 3 moves!");
+    }
+    else if (condition === 'slowed') {
+      statusOfPlayerTwoCursor = 'slowed';
+      $('.playerTwoStatus').text("Cursor slowed for 10 seconds!");
+    }
+    else if (condition === 'gone') {
+      statusOfPlayerTwoCursor = 'gone';
+      $('.playerTwoStatus').text("Where's my cursor?");
+    }
+    else if (condition === 'rotate') {
+      $('.playerTwoStatus').text("Board is rotated!");
+    }
+  }
+}
 
 var updateScore = function(player, condition) {
   if (player === 'playerOne' && condition === 'matched') {
@@ -161,7 +328,8 @@ var checkWinner = function() {
 var updateTime = function() {
   if (isGameOver() === true) {
     //do the same as below;
-    $('.playerOneStatusBar, .playerTwoStatusBar').replaceWith("<div class='winner'>Winner is..." + checkWinner() + "</div>");
+    var finalWinner = checkWinner();
+    $('.playerOneStatusBar, .playerTwoStatusBar').text(`The winner is...${finalWinner}`);
     clearInterval(timeInterval);
     return false;
   }
@@ -170,11 +338,12 @@ var updateTime = function() {
     timeInterval = setInterval(function(){
       timer--;
       if (timer === 0) {
-        $('.playerOneStatusBar, .playerTwoStatusBar').replaceWith("<div class='winner'>Winner is..." + checkWinner() + "</div>");
+        var finalWinner = checkWinner();
+        $('.playerOneStatusBar, .playerTwoStatusBar').text(`The winner is...${finalWinner}`);
         clearInterval(timeInterval);
         return false;
       }
-      $('.timerBox').text(timer + ' SEC'); // shift this to before alert to get '0 sec'
+      $('.timerContainer').text(timer + ' SEC'); // shift this to before alert to get '0 sec'
     },1000)
   }
 }
@@ -191,7 +360,8 @@ var moveCursor = function(whichPlayer) {
     setInterval(function(){
       timerForPlayerOneCursorDisappear--; //from global variable of 10seconds
       if (timerForPlayerOneCursorDisappear === 0) { //this way is better than having the timer at the specialEffects side
-        statusOfPlayerOneCursor = 'normal';
+        // statusOfPlayerOneCursor = 'normal';
+        updatePlayerStatusAndMessage('playerOne', 'normal');
         $('.card').removeClass("white1 cursor1");
         $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
       }
@@ -214,7 +384,8 @@ var moveCursor = function(whichPlayer) {
 
       $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
       // $('.playerOneBox .front i').empty();
-      statusOfPlayerOneCursor === 'normal';
+      // statusOfPlayerOneCursor === 'normal';
+      updatePlayerStatusAndMessage('playerOne', 'normal');
     }
 
     else if (xrayCardsLeftPlayerOne === 3) { // first xray card, no prev xray-ed card to remove
@@ -242,50 +413,21 @@ var moveCursor = function(whichPlayer) {
     }
   }
 
-  else if (  (whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'slowed')         ) {
+  else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'slowed')) {
       $('.card').removeClass("red cursor1");
       statusOfPlayerOneCursor = 'slowed2'; //stops player's movement, preventing player from simply moving again to escape the slow effect
       $('.red').css('transition','10000s ease');
       $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
       setTimeout(function() {
-
           statusOfPlayerOneCursor = 'slowed';
-
-        // if (timerForPlayerOneCursorSlow <= 0) {
-        //   statusOfPlayerOneCursor = 'normal';
-        //   timerForPlayerOneCursorSlow = 0;
-        // }
       },1000)
 
     }
 
-  else if (   (whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'normal')   ) {
+  else if ((whichPlayer === 'playerOne') && (statusOfPlayerOneCursor === 'normal')) {
     $('.card').removeClass("red cursor1");
     $('#'+currentPlayerOneCursorPosition).toggleClass("red cursor1");
   }
-//  below is moveCursor for playerTwo ----------------------------------------
-  // if ((whichPlayer === 'playerTwo') && (statusOfPlayerTwoCursor === 'white') && (onceForPlayerTwo === false)) { //playerOne suffers cursorDisappear()
-  //
-  //   $('.card').removeClass("blue");
-  //   onceForPlayerTwo = true;
-  //   $('#'+currentPlayerTwoCursorPosition).toggleClass("white"); //later add z-index value to .white
-  //
-  //   playerTwoCursorDisappear = setInterval(function(){
-  //     timerForPlayerTwoCursorDisappear--;
-  //     if (timerForPlayerTwoCursorDisappear === 0) {
-  //       statusOfPlayerTwoCursor = 'normal';
-  //       $('.card').removeClass("white");
-  //     }
-  //   },1000) // the problem is the timer-- accelerates every time playerTwo hits the direction button
-  // }
-  // else if ((whichPlayer === 'playerTwo') && (statusOfPlayerTwoCursor === 'white') && (onceForPlayerTwo === true)) {
-  //   $('#'+currentPlayerTwoCursorPosition).toggleClass("white");
-  // }
-  // else if (whichPlayer === 'playerTwo') {
-  //   $('.card').removeClass("blue");
-  //   $('#'+currentPlayerTwoCursorPosition).toggleClass("blue");
-  // }
-
 
   //  below is moveCursor for playerTwo
     if ((whichPlayer === 'playerTwo') && (statusOfPlayerTwoCursor === 'gone')) { //playerTwo suffers cursorDisappear()
@@ -297,7 +439,8 @@ var moveCursor = function(whichPlayer) {
       setInterval(function(){
         timerForPlayerTwoCursorDisappear--;
         if (timerForPlayerTwoCursorDisappear === 0) {
-          statusOfPlayerTwoCursor = 'normal';
+          // statusOfPlayerTwoCursor = 'normal';
+          updatePlayerStatusAndMessage('playerTwo', 'normal');
           $('.card').removeClass("white2 cursor2");
           $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
         }
@@ -316,14 +459,15 @@ var moveCursor = function(whichPlayer) {
         $('#'+currentPlayerTwoCursorPosition+'> .front > img').clone().appendTo('#'+tempPlayerTwoPrevId+'> .front'); // clones back the jQuery logo front
 
         $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
-        statusOfPlayerTwoCursor === 'normal';
+        // statusOfPlayerTwoCursor === 'normal';
+        updatePlayerStatusAndMessage('playerTwo', 'normal');
       }
 
       else if (xrayCardsLeftPlayerTwo === 3) { // first card to be xray-ed, no previous xray-ed card to empty
         $('.card').removeClass("blue cursor2");
         $('#'+currentPlayerTwoCursorPosition+'> .front').empty(); // removes current card's logo
         $('#'+currentPlayerTwoCursorPosition+'> .back > .fa').clone().appendTo('#'+currentPlayerTwoCursorPosition+'> .front'); // xray back of current card
-        $('#'+currentPlayerTwoCursorPosition).toggleClass("red cursor1");
+        $('#'+currentPlayerTwoCursorPosition).toggleClass("blue cursor2");
 
         tempPlayerTwoPrevId = currentPlayerTwoCursorPosition;
         xrayCardsLeftPlayerTwo--;
@@ -447,7 +591,7 @@ var canMoveOrNot = function(direction) {
 var canFlipOrNot = function(player) {
   // if (isGameOver() === false) {
     if (player === 'playerOne') {
-      if (    (numberOfFlippedCardsForPlayerOne < 2) &&   (!($('.cursor1').hasClass('flipped1')))        ) {
+      if ((numberOfFlippedCardsForPlayerOne < 2) && (!($('.cursor1').hasClass('flipped1')))) {
         return true;
       }
       else {
@@ -455,7 +599,7 @@ var canFlipOrNot = function(player) {
       }
     }
     else if (player === 'playerTwo') {
-      if (    (numberOfFlippedCardsForPlayerTwo < 2) &&     (!($('.cursor2').hasClass('flipped3')))     ) {
+      if ((numberOfFlippedCardsForPlayerTwo < 2) && (!($('.cursor2').hasClass('flipped3')))) {
         return true;
       }
       else {
@@ -470,13 +614,15 @@ var canFlipOrNot = function(player) {
 
 var checkMatch = function(player) {
 
-  if (    (player === 'playerOne') &&   (!($(".cursor1").hasClass('matched')))       ) {
+/* checkMatch for player one */
+  if ((player === 'playerOne') && (!($(".cursor1").hasClass('matched')))) {
     if (numberOfFlippedCardsForPlayerOne === 0) {
       $(".cursor1").addClass('flipped1');
       numberOfFlippedCardsForPlayerOne++;
       if (checkForBomb('flipped1')) {
         updateScore('playerOne', 'bomb');
         flashMessage('playerOne', 'red');
+        flashEffect('playerOne', 'bomb');
         return;
       }
     }
@@ -499,6 +645,7 @@ var checkMatch = function(player) {
         if (checkForBomb('flipped2')) {
           updateScore('playerOne', 'bomb');
           flashMessage('playerOne', 'red');
+          flashEffect('playerOne', 'bomb');
           return; //if second flipped card is a bomb, skip the setTimeout below
         }
         setTimeout(function() {
@@ -510,35 +657,9 @@ var checkMatch = function(player) {
       }
     }
   }
-  // else if (player === 'playerTwo') {
-  //   if (numberOfFlippedCardsForPlayerTwo === 0) {
-  //     $(".blue").addClass('flipped3');
-  //     numberOfFlippedCardsForPlayerTwo++;
-  //   }
-  //   else if (numberOfFlippedCardsForPlayerTwo === 1) {
-  //     $(".blue").addClass('flipped4');
-  //     numberOfFlippedCardsForPlayerTwo++;
-  //     if (($('.flipped3 > .back > i').attr('class')) === ($('.flipped4 > .back > i').attr('class'))) {
-  //       console.log("OMG IT WORKED!");
-  //       //add 'matched' class here
-  //       $('.flipped3, .flipped4').addClass('matched2');
-  //       $('.matched2').removeClass('flipped3 flipped4');
-  //       pairsOfMatchedCardsPlayerTwo++;
-  //       updateScore('playerTwo');
-  //       numberOfFlippedCardsForPlayerTwo = 0;
-  //       return;
-  //     }
-  //     else {
-  //       setTimeout(function() {
-  //         $('.flipped3, .flipped4').flip(false);
-  //         $('.card').removeClass('flipped3 flipped4');
-  //         numberOfFlippedCardsForPlayerTwo = 0;
-  //       },800)
-  //       console.log("Nope, no match.");
-  //     }
-  //   }
-  // }
-  else if (    (player === 'playerTwo') &&    (!($(".cursor2").hasClass('matched2')))    ) {
+
+/* checkMatch for player two */
+  else if ((player === 'playerTwo') && (!($(".cursor2").hasClass('matched2')))) {
 
     if (numberOfFlippedCardsForPlayerTwo === 0) {
       $(".cursor2").addClass('flipped3');
@@ -546,6 +667,7 @@ var checkMatch = function(player) {
       if (checkForBomb('flipped3')) {
         updateScore('playerTwo', 'bomb');
         flashMessage('playerTwo', 'red');
+        flashEffect('playerTwo', 'bomb');
         return;
       }
     }
@@ -569,6 +691,7 @@ var checkMatch = function(player) {
         if (checkForBomb('flipped4')) {
           updateScore('playerTwo', 'bomb');
           flashMessage('playerTwo', 'red');
+          flashEffect('playerTwo', 'bomb');
           return;
         }
         setTimeout(function() {
@@ -595,40 +718,32 @@ var isGameOver = function() {
 $(document).ready(function(){
   $('div.notHidden').fadeTo('slow', 0.1);
   $('div.firstBox').fadeIn(2000).removeClass('hidden');
-  // restart();
-  // updateScore('playerOne');
-  // updateScore('playerTwo');
-  // randomAssignImages('playerOne');
-  // randomAssignImages('playerTwo');
-  // $(".card").flip({
-  //   trigger: 'manual'
-  // });
 
   $('button').click(function(){
     $('div.firstBox').fadeOut(1000).addClass('hidden');
     $('div.notHidden').fadeTo('slow', 1);
     restart();
     updateTime();
-    // updateScore('playerOne');
-    // updateScore('playerTwo');
     randomAssignImages('playerOne');
     randomAssignImages('playerTwo');
     $(".card").flip({
       trigger: 'manual'
     });
-    console.log("bomb is at: ",$('.bomb').parent());
-    console.log("pause is at: ", $('.pause').parent());
-    console.log("rotation is at: ",$('.recycle2').parent());
   })
 
-
-  // console.log("bomb is at: ",$('.bomb').parent());
-  // console.log("pause is at: ", $('.pause').parent());
-  // console.log("rotation is at: ",$('.recycle2').parent());
-
-  // var firstCardId = 1,
-  //     secondCardId = 3;
-
+  $(document).keyup(function(event) {
+    if (!$('div.firstBox').hasClass('hidden')) {
+      $('div.firstBox').fadeOut(1000).addClass('hidden');
+      $('div.notHidden').fadeTo('slow', 1);
+      restart();
+      updateTime();
+      randomAssignImages('playerOne');
+      randomAssignImages('playerTwo');
+      $(".card").flip({
+        trigger: 'manual'
+      });
+    }
+  })
 
   $(document).keyup(function(event) {
 
@@ -647,72 +762,15 @@ $(document).ready(function(){
 
         // prepareForCardShuffle(); //make sure to stop victim's cursor from moving when implementing cardShuffle!
         prepareForCardShuffle('playerTwo');
-
-        // cardShuffle(arrOfUnmatchedCardsId);
-
-        // cardShuffle();
-
-        // var firstCardId = 4;
-        // var secondCardId = 6;
-        //
-        // var firstCard = $('#'+firstCardId),
-        //     secondCard = $('#'+secondCardId),
-        //     beforeSecondCard = $('#'+(secondCardId-1)),
-        //     afterSecondCard = $('#'+(secondCardId+1)),
-        //     distanceTop = firstCard.offset().top - secondCard.offset().top,
-        //     distanceLeft = firstCard.offset().left - secondCard.offset().left,
-        //     animating = false;
-        //
-        //
-        // if (!firstCard.hasClass('matched') && (!firstCard.hasClass('red'))) {
-        //   animating = true;
-        //   $.when(firstCard.animate({
-        //     top: -distanceTop,
-        //     left: -distanceLeft
-        //   }, 2000),
-        //   secondCard.animate({
-        //     top:distanceTop,
-        //     left:distanceLeft
-        //   }, 2000)).done(function() {
-        //     secondCard.css('top', '0px');
-        //     secondCard.css('left', '0px');
-        //     firstCard.css('top', '0px');
-        //     firstCard.css('left', '0px');
-        //     secondCard.insertBefore(firstCard);
-        //     if (secondCardId%5===1) {
-        //       firstCard.insertBefore(afterSecondCard);
-        //     }
-        //     else {
-        //       firstCard.insertAfter(beforeSecondCard); //this alone will not work for 1 move to 6, 1 will move to after 5 instead (row 1 still), so to mitigate this we have the line above
-        //     };
-        //     secondCard.attr('id',firstCardId);
-        //     firstCard.attr('id',secondCardId);
-        //     firstCard = $('#'+firstCardId); //this n nxt step ensure repeatability of swopping
-        //     secondCard = $('#'+secondCardId);
-        //
-        //     // firstCard.prependTo(".row1");
-        //     // console.log(secondCard.attr('id'));
-        //     // secondCard.attr('id=2')
-        //     animating = false;
-        //   });
-        // }
       }
 
-
-
       else if (event.which === 87 || 65 || 83 || 68 || 38 || 37 || 40 || 39)  {
-        // if (boardRotationPlayerOne === 'normal') {
+        // rotated board condition considered in the following function already
         canMoveOrNot(event);
-        // }
-        // else if (boardRotationPlayerOne === 'rotated') {
-        //
-        // }
       }
 
     }
     else {
-      // alert("The game has ended!"); //doesn't work well with keydown!
-
       console.log("the game has ended");
     }
   })

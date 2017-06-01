@@ -66,11 +66,15 @@ var unleashBonus = function(player) {
 var cursorDisappear = function(victim) { //done
 
   if (victim === 'playerOne') {
-    statusOfPlayerOneCursor = 'gone';
+    // statusOfPlayerOneCursor = 'gone';
+    updatePlayerStatusAndMessage('playerOne', 'gone');
+    flashEffect('playerOne', 'gone');
     moveCursor(victim);
   }
   else if (victim === 'playerTwo') {
-    statusOfPlayerTwoCursor = 'gone';
+    // statusOfPlayerTwoCursor = 'gone';
+    updatePlayerStatusAndMessage('playerTwo', 'gone');
+    flashEffect('playerTwo', 'gone');
     moveCursor(victim);
   }
 
@@ -78,6 +82,8 @@ var cursorDisappear = function(victim) { //done
 
 var rotateBoard = function(victim) {
   if (victim === 'playerTwo') {
+    updatePlayerStatusAndMessage('playerTwo', 'rotate');
+    flashEffect('playerTwo', 'rotate');
     $('.playerTwoBox').addClass('rotate90CounterClockwise');
     boardRotationPlayerTwo = 'rotated';
     returnToOriginalPosition = setTimeout(function() {
@@ -86,6 +92,8 @@ var rotateBoard = function(victim) {
     },10000)
   }
   else if (victim === 'playerOne') {
+    updatePlayerStatusAndMessage('playerOne', 'rotate');
+    flashEffect('playerOne', 'rotate');
     $('.playerOneBox').addClass('rotate90Clockwise');
     boardRotationPlayerOne = 'rotated';
     returnToOriginalPosition = setTimeout(function() {
@@ -98,18 +106,25 @@ var rotateBoard = function(victim) {
 var xrayCursor = function(player) {
   if (player === 'playerOne') {
     statusOfPlayerOneCursor = 'xray';
+    updatePlayerStatusAndMessage('playerOne', "xray");
+    flashEffect('playerOne', 'xray');
   }
   if (player === 'playerTwo') {
     statusOfPlayerTwoCursor = 'xray';
+    updatePlayerStatusAndMessage('playerTwo', "xray");
+    flashEffect('playerTwo', 'xray');
   }
 }
 
 var pausePausePause = function(victim) {
   if (victim === 'playerTwo') {
-    statusOfPlayerTwoCursor = 'slowed';
+    // statusOfPlayerTwoCursor = 'slowed';
+    updatePlayerStatusAndMessage('playerTwo', 'slowed');
+    flashEffect('playerTwo', 'slow');
     setTimeout(function() {
       preventKeySpamming2 = setInterval(function() {
-        statusOfPlayerTwoCursor = 'normal';
+        // statusOfPlayerTwoCursor = 'normal';
+        updatePlayerStatusAndMessage('playerTwo', 'normal');
       },100)
       $('.blue').css('transition','0.1s ease');
     },10000)
@@ -117,14 +132,16 @@ var pausePausePause = function(victim) {
       clearInterval(preventKeySpamming2);
     },13000)
   }
+
   if (victim === 'playerOne') {
-    statusOfPlayerOneCursor = 'slowed';
-
-
+    // statusOfPlayerOneCursor = 'slowed';
+    updatePlayerStatusAndMessage('playerOne', 'slowed');
+    flashEffect('playerOne', 'slow');
     setTimeout(function() {
       //set a setInterval here to 'rapidfire' setting (100ms) status back to 'normal', in case player spams direction key.
       preventKeySpamming1 = setInterval(function() {
-        statusOfPlayerOneCursor = 'normal';
+        // statusOfPlayerOneCursor = 'normal';
+            updatePlayerStatusAndMessage('playerOne', 'normal');
       },100)
 
       $('.red').css('transition','0.1s ease');
@@ -163,7 +180,6 @@ var checkForBomb = function(flippedNum) {
         $('.flipped3').flip(false);
         $('.card').removeClass('flipped3');
         numberOfFlippedCardsForPlayerTwo = 0;
-        scoreOfPlayerTwo -= 10;
         $('.playerTwoScore').text(scoreOfPlayerTwo);
       },800)
       return true;
@@ -175,7 +191,6 @@ var checkForBomb = function(flippedNum) {
         $('.flipped3, .flipped4').flip(false);
         $('.card').removeClass('flipped3 flipped4');
         numberOfFlippedCardsForPlayerTwo = 0;
-        scoreOfPlayerTwo -= 10;
         $('.playerTwoScore').text(scoreOfPlayerTwo);
       },800)
       return true;
@@ -194,6 +209,8 @@ var prepareForCardShuffle = function(victim) {
 
   if (victim === 'playerOne') {
 
+    flashEffect('playerOne', 'shuffle');
+
     for (var i=1; i<26; i++) { //get array of IDs of unmatched cards
       if (  (!$('#'+i).hasClass('matched')) && (!$('#'+i).hasClass('cursor1'))    ) {
         arrOfUnmatchedCardsIdPlayerOne.push(i);
@@ -205,6 +222,7 @@ var prepareForCardShuffle = function(victim) {
   }
 
   else if (victim === 'playerTwo') {
+    flashEffect('playerTwo', 'shuffle');
     for (var j=26; j<51; j++) { //get array of IDs of unmatched cards
       if (  (!$('#'+j).hasClass('matched2')) && (!$('#'+j).hasClass('cursor2'))    ) {
         arrOfUnmatchedCardsIdPlayerTwo.push(j);
